@@ -1,18 +1,34 @@
-package com.vaiss.edl;
+package com.vaiss.edl.client;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Properties;
 
 public class ChatClient {
 	private static volatile boolean disconnectDemanded;
 	public static final String QUIT_WORD = "quit";
 
 	public static void main(String[] args) {
-		//TODO delete net line
+		// TODO delete net line
 		System.out.println("MainClient started");
-		try (Socket socket = new Socket(InetAddress.getLocalHost(), 8020)) {
+		Properties properties = new Properties();
+		try {
+			properties.load(new FileReader("config.properties"));
+		} catch (FileNotFoundException e1) {
+			System.out.println("Can't find properties file!");
+			return;
+		} catch (IOException e1) {
+			System.out.println("Something went wrong while reading properties");
+			e1.printStackTrace();
+			return;
+		}
+		int port = Integer.valueOf(properties.getProperty("port"));
+		String IP = properties.getProperty("serverIP");
+		try (Socket socket = new Socket(InetAddress.getByName(IP), port)) {
 			/*
 			 * tried to start both writer and reader from main thread but refused in favor
 			 * of starting reader thread from writer see Chat writer class for details
@@ -21,7 +37,7 @@ public class ChatClient {
 			writer.start();
 			while (!ChatClient.disconnectDemanded) {
 			}
-			//TODO delete net line
+			// TODO delete net line
 			System.out.println("MainClient finished");
 		} catch (UnknownHostException e) {
 			System.out.println("Can't identify remote host!");
