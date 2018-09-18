@@ -1,15 +1,10 @@
 package com.vaiss.edl.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectedUsersManager {
 	private static ConnectedUsersManager instance;
-	private volatile ConcurrentHashMap<String, Socket> usersConnected = new ConcurrentHashMap<>();
+	private volatile ConcurrentHashMap<String, ChatUser> usersConnected = new ConcurrentHashMap<>();
 
 	private ConnectedUsersManager() {
 
@@ -22,11 +17,11 @@ public class ConnectedUsersManager {
 		return instance;
 	}
 
-	public void addUser(String nickName, Socket socket) {
-		usersConnected.put(nickName, socket);
+	public void addUser(ChatUser user) {
+		usersConnected.put(user.getNickName(), user);
 	}
 
-	public Socket getUserSocket(String nickName) {
+	public ChatUser getUser(String nickName) {
 		return usersConnected.get(nickName);
 	}
 	
