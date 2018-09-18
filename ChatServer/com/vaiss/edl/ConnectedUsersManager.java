@@ -1,4 +1,4 @@
-package com.vaiss.edl;
+package com.vaiss.edl.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,34 +8,49 @@ import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectedUsersManager {
-	private static volatile ConcurrentHashMap<String, Socket> usersConnected = new ConcurrentHashMap<>();
-	private Socket socket;
+	private static ConnectedUsersManager instance;
+	private volatile ConcurrentHashMap<String, Socket> usersConnected = new ConcurrentHashMap<>();
 
-	public ConnectedUsersManager(Socket socket) {
-		this.socket = socket;
+	private ConnectedUsersManager() {
+
 	}
 
-	public void addUser(String nickName) {
+	public static synchronized ConnectedUsersManager getInstance() {
+		if (instance == null) {
+			return new ConnectedUsersManager();
+		}
+		return instance;
+	}
+
+	public void addUser(String nickName, Socket socket) {
 		usersConnected.put(nickName, socket);
+	}
+
+	public Socket getUserSocket(String nickName) {
+		return usersConnected.get(nickName);
+	}
+	
+	public boolean isUserPresent(String nickName) {
+		return usersConnected.containsKey(nickName);
 	}
 
 	public void removeUser(String nickName) {
 		usersConnected.remove(nickName);
 	}
 
-	public void processNewUser() {
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				PrintStream out = new PrintStream(socket.getOutputStream())) {
-			String nickName = "";
-			while (nickName == "" || (usersConnected.get(nickName) != null)) {
-				out.println("Please, enter your nickName:");
-				nickName = in.readLine();
-			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public int getUsersQuantity() {
+		return usersConnected.size();
 	}
+
+	/*
+	 * public void processNewUser() { try (BufferedReader in = new
+	 * BufferedReader(new InputStreamReader(socket.getInputStream())); PrintStream
+	 * out = new PrintStream(socket.getOutputStream())) { String nickName = "";
+	 * while (nickName == "" || (usersConnected.get(nickName) != null)) {
+	 * out.println("Please, enter your nickName:"); nickName = in.readLine(); }
+	 * 
+	 * } catch (IOException e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); } }
+	 */
 
 }
