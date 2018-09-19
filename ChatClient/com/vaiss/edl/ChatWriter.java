@@ -1,4 +1,4 @@
-package com.vaiss.edl;
+package com.vaiss.edl.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
