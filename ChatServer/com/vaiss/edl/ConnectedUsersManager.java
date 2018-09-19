@@ -52,9 +52,6 @@ public class ConnectedUsersManager {
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			PrintStream out = new PrintStream(socket.getOutputStream());
 
-			addUser(new ChatUser("Bob", new Socket()));
-			addUser(new ChatUser("Laila", new Socket()));
-
 			String nickName = "";
 			while (nickName.equals("") || nickName.toLowerCase().equals(QUIT_WORD)
 					|| nickName.toLowerCase().equals(WAIT_WORD) || (getUser(nickName) != null)) {
@@ -68,17 +65,41 @@ public class ConnectedUsersManager {
 
 			String partnerNickName = "";
 			while (partnerNickName.equals("")) {
-				out.println("Pleas, choose a user to talk to\r\n or type \"" + QUIT_WORD + "\" to leave this chat\r\n"
-						+ "or type \"" + WAIT_WORD + "\" to wait untill your partner connects to you");
-				ArrayList<String> nickList = Collections.list(usersConnected.keys());
-				out.println(nickList);
+				if (getUsersQuantity() == 0) {
+
+					out.println("You are the only user in this chat\r\n" + 
+					"Type \"" + QUIT_WORD + "\" if you don't want to wait incoming connection");
+					switch (in.readLine().toLowerCase()) {
+					case QUIT_WORD:
+						partnerNickName = QUIT_WORD;
+						break;
+					default:
+						partnerNickName = WAIT_WORD;
+					}
+				} else {
+					out.println("Pleas, choose a user to talk to\r\n" + "or type \"" + QUIT_WORD
+							+ "\" to leave this chat\r\n" + "or type \"" + WAIT_WORD
+							+ "\" to wait untill your partner connects to you");
+					ArrayList<String> nickList = Collections.list(usersConnected.keys());
+					out.println(nickList);
+
+					partnerNickName = in.readLine();
+				}
+
 				if (partnerNickName.toLowerCase().equals(WAIT_WORD)) {
 					addUser(new ChatUser(nickName, socket));
+					out.println("Please wait for incoming connections...");
+					System.out.println("User \"" + nickName + "\" is in waiting mode");
 					return;
 				}
 				if (partnerNickName.toLowerCase().equals(QUIT_WORD)) {
-					out.println(QUIT_WORD);
+					// use the next sequence of commands:
+					// 1. close inputstream,
+					// 2. send QUIT_WORD to user,
+					// 3.close outputstream
+					// else you got reset connection error on server
 					in.close();
+					out.println(QUIT_WORD);
 					out.close();
 					return;
 				}
@@ -92,6 +113,7 @@ public class ConnectedUsersManager {
 
 			Thread serverThread = new Thread(new ServerThread(getUser(nickName), getUser(partnerNickName)));
 			serverThread.start();
+			System.out.println(nickName + " and " + partnerNickName + " started private chat");
 
 		} catch (IOException e) { // TODO Auto-generated catch block
 			e.printStackTrace();
