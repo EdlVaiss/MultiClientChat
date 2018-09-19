@@ -13,8 +13,9 @@ public class ChatServer {
 			while (true) {
 				Socket socket = ss.accept();
 				System.out.println(socket.getInetAddress().getHostName() + " connected");
-		
-				if (manager.getUsersQuantity() == 0) {
+				manager.processNewUser(socket);
+				
+				/*if (manager.getUsersQuantity() == 0) {
 					manager.addUser(new ChatUser("first", socket));
 				} else if (manager.getUsersQuantity() == 1) {
 					if (manager.isUserPresent("first")) {
@@ -30,7 +31,7 @@ public class ChatServer {
 					try (PrintStream out = new PrintStream(socket.getOutputStream())) {
 						out.println("Sorry! It's a private chat! You're a third wheel!\r\nPlease quit!");
 					}
-				}
+				}*/
 			}
 		} catch (IOException e) {
 			System.out.println("Failed to establish Serversocket!");
