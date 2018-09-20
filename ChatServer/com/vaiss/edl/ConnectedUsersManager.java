@@ -37,15 +37,4 @@ public class ConnectedUsersManager {
 		return usersConnected.size();
 	}
 
-	/*
-	 * public void processNewUser() { try (BufferedReader in = new
-	 * BufferedReader(new InputStreamReader(socket.getInputStream())); PrintStream
-	 * out = new PrintStream(socket.getOutputStream())) { String nickName = "";
-	 * while (nickName == "" || (usersConnected.get(nickName) != null)) {
-	 * out.println("Please, enter your nickName:"); nickName = in.readLine(); }
-	 * 
-	 * } catch (IOException e) { // TODO Auto-generated catch block
-	 * e.printStackTrace(); } }
-	 */
-
 }

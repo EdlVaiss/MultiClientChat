@@ -33,7 +33,12 @@ public class ChannelThread implements Runnable {
 				}
 				out2.println(nickName + ": " + message);
 			}
-		} catch (UnknownHostException e) {
+		}catch (java.net.SocketException e) {
+			System.out.println(e.getMessage());
+			ChatServer.manager.removeUser(nickName);
+			//e.printStackTrace();
+		} 
+		catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
