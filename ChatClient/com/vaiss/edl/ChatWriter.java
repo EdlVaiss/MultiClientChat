@@ -1,4 +1,4 @@
-package com.vaiss.edl;
+package com.vaiss.edl.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,8 +17,6 @@ public class ChatWriter implements Runnable {
 	public void run() {
 		Thread reader = new Thread(new ChatReader(socket));
 		reader.start();
-//TODO delete net line
-		System.out.println("ChatWriter started");
 		BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 		try (PrintStream out = new PrintStream(socket.getOutputStream())) {
 			String message = "";
@@ -37,8 +35,6 @@ public class ChatWriter implements Runnable {
 				}
 				out.println(message);
 			}
-//TODO delete net line
-			System.out.println("ChatWriter finished");
 		} catch (IOException e) {
 			System.out.println("Failed to write to socket!");
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.vaiss.edl;
+package com.vaiss.edl.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,8 +14,6 @@ public class ChatReader implements Runnable {
 
 	@Override
 	public void run() {
-		//TODO delete net line
-		System.out.println("ChatReader started");
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 			String message = "";
 			while ((message = in.readLine()) != null) {
@@ -25,8 +23,6 @@ public class ChatReader implements Runnable {
 				System.out.println(message);
 			}
 			ChatClient.setDisconnectDemanded(true);
-			//TODO delete net line
-			System.out.println("ChatReader finished");
 		} catch (IOException e) {
 			System.out.println("Failed to read from socket!");
 			e.printStackTrace();

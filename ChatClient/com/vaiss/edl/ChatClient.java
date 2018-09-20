@@ -13,8 +13,6 @@ public class ChatClient {
 	public static final String QUIT_WORD = "quit";
 
 	public static void main(String[] args) {
-		// TODO delete net line
-		System.out.println("MainClient started");
 		Properties properties = new Properties();
 		try {
 			properties.load(new FileReader("config.properties"));
@@ -37,8 +35,6 @@ public class ChatClient {
 			writer.start();
 			while (!ChatClient.disconnectDemanded) {
 			}
-			// TODO delete net line
-			System.out.println("MainClient finished");
 		} catch (UnknownHostException e) {
 			System.out.println("Can't identify remote host!");
 			e.printStackTrace();
