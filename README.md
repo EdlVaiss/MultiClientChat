@@ -1,2 +1,2 @@
-# MultiClientChat
-my first chat in Java
+# CremlinChat))
+thick client for two person RSA encrypted instant chat
