@@ -65,7 +65,7 @@ public class ChatWriter implements Runnable {
 					break;
 				}
 
-				byte[] encryptedMessage = ChatClient.getCryptor().encrypt(nickName + ": " + message);
+				byte[] encryptedMessage = ChatClient.getCryptor().encrypt("\t" + nickName + ": " + message);
 				out.write(encryptedMessage);
 			}
 		} catch (IOException e) {
