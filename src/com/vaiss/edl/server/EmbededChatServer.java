@@ -6,20 +6,20 @@ import java.net.Socket;
 import java.util.Properties;
 
 import com.vaiss.edl.client.ChatWriter;
-import com.vaiss.edl.exceptions.PropertiesException;
 import com.vaiss.edl.propertiesholder.PropertiesHolder;
 
 public class EmbededChatServer {
 
-	// public static void main(String[] args) {
 	public void start() {
-		Properties properties;
-		try {
-			properties = new PropertiesHolder().getProperties();
-		} catch (PropertiesException e1) {
+		System.out.println("CremlinChatServer started.");
+		Properties properties = PropertiesHolder.getProperties();
+		if (properties.isEmpty()) {
+			System.out.println("Shutdown server because of properties issue!");
 			return;
 		}
+
 		try (ServerSocket serverSocket = new ServerSocket(Integer.valueOf(properties.getProperty("port")))) {
+			System.out.println("Waiting for incoming connection...");
 			Socket socket = serverSocket.accept();
 			Thread writer = new Thread(new ChatWriter(socket));
 			writer.start();
