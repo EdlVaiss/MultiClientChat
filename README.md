@@ -12,6 +12,6 @@ Known issues(solving in process):
 
 (SOLVED) if you use chat through standard command prompt window and type message using ciryllic symbols, it comes corrupted to chat partner, though in IDE console ciryllic mesages are displayed right. 
 
-Data must not be longer than 245 bytes, experimentally found out that it is somewhat 236 latin utf-8 symbols
+Data must not be longer than 245 bytes
 
 Regret, it doesn't yet work with proxy
