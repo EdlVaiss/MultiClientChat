@@ -31,7 +31,7 @@ public class ChatReader implements Runnable {
 			while ((bytesRead = in.read(content)) != -1) {
 				message = ChatClient.getCryptor().decript(Arrays.copyOfRange(content, 0, bytesRead));
 				if (message.toLowerCase().equals(ChatClient.QUIT_WORD)) {
-					System.out.println("Your partner has just left the conversation. Type \"quit\" to exit");
+					System.out.println("Your partner has just left the conversation. Press \"Enter\" to exit");
 					break;
 				}
 				System.out.println(message);

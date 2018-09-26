@@ -43,11 +43,22 @@ public class ChatWriter implements Runnable {
 			}
 			out.write(ChatClient.getCryptor().encrypt("Secure connection established! You can now chat securely..."));
 
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			String cmdEncoding = properties.getProperty("cmdEncoding");
+
+			if (cmdEncoding == null) {
+				System.out.println("Can't find encoding in config file! Trying to use UTF-8...");
+				cmdEncoding = "UTF-8";
+			}
+
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in, cmdEncoding));
 
 			String message = "";
 			while ((message = stdIn.readLine()) != null) {
 
+				if (socket.isClosed()) {
+					break;
+				}
+				
 				if (message.toLowerCase().equals(ChatClient.QUIT_WORD)) {
 					/*
 					 * trying to terminate writer thread before reader thread caused closing both
@@ -56,9 +67,7 @@ public class ChatWriter implements Runnable {
 					 * to start reader thread from writer thread to be able to make writer wait
 					 * (using join()) till reader thread is done
 					 */
-					if (socket.isClosed()) {
-						break;
-					}
+
 					byte[] encryptedMessage = ChatClient.getCryptor().encrypt(message);
 					out.write(encryptedMessage);// notify partner's reader that we intend to quit
 					reader.join();
