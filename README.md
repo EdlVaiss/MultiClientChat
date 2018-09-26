@@ -6,5 +6,7 @@ Your messages are defended by RSA 2048 bit key. New pair of RSA keys (public and
 Regret, it doesn't yet work with proxy(
 
 Known issues(solving in process): 
+
 while using chat through standard command prompt window message typed using ciryllic symbols comes corrupted to chat partner, though in IDE console ciryllic mesages are displayed right. 
+
 Data must not be longer than 245 bytes, experimentally found out that it is somewhat 236 latin utf-8 symbols
