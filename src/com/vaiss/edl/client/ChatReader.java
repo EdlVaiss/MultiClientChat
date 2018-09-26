@@ -1,10 +1,10 @@
 package com.vaiss.edl.client;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.security.PublicKey;
+import java.util.Arrays;
 
 public class ChatReader implements Runnable {
 	private Socket socket;
@@ -16,7 +16,7 @@ public class ChatReader implements Runnable {
 	@Override
 	public void run() {
 
-		try (InputStream in = socket.getInputStream(); ByteArrayOutputStream baos = new ByteArrayOutputStream();) {
+		try (InputStream in = socket.getInputStream(); ) {
 
 			if (ChatClient.getCryptor().getPartnerPublicKey() == null) {
 				KeyReader keyReader = new KeyReader(in, ChatClient.getKeyTransmissionEndByteSequence());
@@ -27,19 +27,16 @@ public class ChatReader implements Runnable {
 			byte[] content = new byte[2048];
 			int bytesRead = 0;
 			String message = "";
-			
+
 			while ((bytesRead = in.read(content)) != -1) {
-				baos.reset();
-				baos.write(content, 0, bytesRead);
-				message = ChatClient.getCryptor().decript(baos.toByteArray());
-				
+				message = ChatClient.getCryptor().decript(Arrays.copyOfRange(content, 0, bytesRead));
 				if (message.toLowerCase().equals(ChatClient.QUIT_WORD)) {
 					System.out.println("Your partner has just left the conversation. Type \"quit\" to exit");
 					break;
 				}
 				System.out.println(message);
 			}
-			
+
 			ChatClient.setDisconnectDemanded(true);
 
 		} catch (ClassNotFoundException e) {
