@@ -5,15 +5,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.vaiss.edl.client.ChatWriter;
 import com.vaiss.edl.propertiesholder.PropertiesHolder;
 
 public class EmbededChatServer {
-
+	private static Logger log = Logger.getLogger(EmbededChatServer.class);
+	
 	public void start() {
 		System.out.println("CremlinChatServer started.");
 		Properties properties = PropertiesHolder.getProperties();
 		if (properties.isEmpty()) {
+			log.error("Can't find or read properties file");
 			System.out.println("Shutdown server because of properties issue!");
 			return;
 		}
@@ -25,11 +29,10 @@ public class EmbededChatServer {
 			writer.start();
 			writer.join();
 		} catch (IOException e) {
+			log.fatal("Failed to establish Serversocket!");
 			System.out.println("Failed to establish Serversocket!");
-			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.fatal("Multithreading issue");
 		}
 
 	}
