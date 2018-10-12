@@ -7,9 +7,13 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
+import com.vaiss.edl.exceptions.EncriptionException;
 import com.vaiss.edl.propertiesholder.PropertiesHolder;
 
 public class ChatWriter implements Runnable {
+	private static Logger log = Logger.getLogger(ChatWriter.class);
 	private Socket socket;
 
 	public ChatWriter(Socket socket) {
@@ -58,7 +62,7 @@ public class ChatWriter implements Runnable {
 				if (socket.isClosed()) {
 					break;
 				}
-				
+
 				if (message.toLowerCase().equals(ChatClient.QUIT_WORD)) {
 					/*
 					 * trying to terminate writer thread before reader thread caused closing both
@@ -77,12 +81,14 @@ public class ChatWriter implements Runnable {
 				byte[] encryptedMessage = ChatClient.getCryptor().encrypt("\t" + nickName + ": " + message);
 				out.write(encryptedMessage);
 			}
+		} catch (EncriptionException e) {
+			System.out.println("Encription process failed");
 		} catch (IOException e) {
+			log.error("Failed to write to socket!");
 			System.out.println("Failed to write to socket!");
-			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.fatal("Multithreading issue");
+			System.out.println("Something went wrong!");
 		}
 	}
 

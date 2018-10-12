@@ -6,11 +6,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.vaiss.edl.crypto.Cryptor;
 import com.vaiss.edl.crypto.RSACryptor;
 import com.vaiss.edl.propertiesholder.PropertiesHolder;
 
 public class ChatClient {
+	private static Logger log = Logger.getLogger(ChatClient.class);
 	private static volatile boolean disconnectDemanded;
 	private static Cryptor cryptor = RSACryptor.getInstance();
 	private static final byte[] keyTransmissionEndByteSequence = new byte[] { -1, -2, -3, -4 };
@@ -22,6 +25,7 @@ public class ChatClient {
 		Properties properties = PropertiesHolder.getProperties();
 
 		if (properties.isEmpty()) {
+			log.error("Can't find or read properties file");
 			System.out.println("Shutdown client because of properties issue!");
 			return;
 		}
@@ -41,8 +45,10 @@ public class ChatClient {
 			while (!ChatClient.disconnectDemanded) {
 			}
 		} catch (UnknownHostException e) {
+			log.error("Can't identify remote host!");
 			System.out.println("Can't identify remote host!");
 		} catch (IOException e) {
+			log.error("Something went wrong with the socket!");
 			System.out.println("Something went wrong with the socket!");
 		}
 	}
