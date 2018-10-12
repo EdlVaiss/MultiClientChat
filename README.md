@@ -10,8 +10,8 @@ Your messages are defended by RSA 2048 bit key. New pair of RSA keys (public and
 
 Known issues(solving in process): 
 
-(SOLVED) if you use chat through standard command prompt window and type message using ciryllic symbols, it comes corrupted to chat partner, though in IDE console ciryllic mesages are displayed right. 
+[SOLVED] if you use chat through standard command prompt window and type message using ciryllic symbols, it comes corrupted to chat partner, though in IDE console ciryllic mesages are displayed right. 
 
-Each message must not be longer than 245 bytes
+[SOLVED] Each message must not be longer than 245 bytes
 
 Regret, it doesn't yet work with proxy
