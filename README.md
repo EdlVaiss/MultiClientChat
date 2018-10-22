@@ -1,5 +1,5 @@
 # CremlinChat))
-thick client for two person RSA encrypted instant chat.
+Two person RSA encrypted console instant chat.
 
 Launch it as server and wait for your partner to connect (you should provide your partner with IP and port that are configured in config.properties file. Dont't forget to type your nick name to config.properties file).
 
