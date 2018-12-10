@@ -1,2 +1,2 @@
-java -jar CremlinChat.jar -ñ
+java -jar CremlinChat.jar -c
 pause
