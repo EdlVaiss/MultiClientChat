@@ -49,7 +49,7 @@ public class ChatWriter implements Runnable {
 
 			String cmdEncoding = properties.getProperty("cmdEncoding");
 
-			if (cmdEncoding == null) {
+			if (cmdEncoding == null || cmdEncoding.equals("")) {
 				System.out.println("Can't find encoding in config file! Trying to use UTF-8...");
 				cmdEncoding = "UTF-8";
 			}
