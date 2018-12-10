@@ -103,7 +103,6 @@ public class RSACryptor implements Cryptor {
 
 		} catch (Exception ex) {
 			log.fatal("Decription process failed");
-			ex.printStackTrace();
 			throw new DecriptionException();
 		}
 		return new String(dectyptedMessage);
