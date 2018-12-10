@@ -83,13 +83,13 @@ public class RSACryptor implements Cryptor {
 
 	@Override
 	public String decript(byte[] message) throws DecriptionException {
-		byte[] dectyptedMessage = null;
+		byte[] decryptedMessage = null;
 		try {
 			final Cipher cipher = Cipher.getInstance(ALGORITHM);
 			cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
 
 			if (message.length <= MAX_DEC_MESSAGE_LEN) {
-				dectyptedMessage = cipher.doFinal(message);
+				decryptedMessage = cipher.doFinal(message);
 			} else {
 				ByteArraySplitter splitter = new ByteArraySplitter();
 				splitter.split(message, MAX_DEC_MESSAGE_LEN);
@@ -98,13 +98,13 @@ public class RSACryptor implements Cryptor {
 					byte[] encodedPart = cipher.doFinal(splitter.next());
 					eater.feed(encodedPart);
 				}
-				dectyptedMessage = eater.scare();
+				decryptedMessage = eater.scare();
 			}
 
 		} catch (Exception ex) {
 			log.fatal("Decription process failed");
 			throw new DecriptionException();
 		}
-		return new String(dectyptedMessage);
+		return new String(decryptedMessage);
 	}
 }
