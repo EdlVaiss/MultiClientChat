@@ -53,10 +53,9 @@ public class ChatReader implements Runnable {
 			ChatClient.setDisconnectDemanded(true);
 
 		} catch (IOException e) {
-			log.error("Failed to manage partner's public key!");
+			log.error("Failed to read from socket!");
 			System.out.println("Failed to read from socket!");
 			ChatClient.setDisconnectDemanded(true);
-			e.printStackTrace();
 		}
 	}
 }
