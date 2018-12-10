@@ -6,7 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import org.apache.log4j.Logger;
+
 public class KeyGen {
+	private static Logger log = Logger.getLogger(KeyGen.class);
 	private KeyPair keyPair;
 
 	public KeyGen() {
@@ -18,7 +21,7 @@ public class KeyGen {
 			// Generate the keys — might take sometime on slow computers
 			keyPair = kpg.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			log.error("Algorithm is absent!");
 		}
 	}
 	
