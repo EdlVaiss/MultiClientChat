@@ -25,19 +25,14 @@ public class KeyReader {
 
 			int bytesRead = 0;
 			int totalBytesRead = 0;
-			while ((bytesRead = in.read(content, totalBytesRead, content.length - totalBytesRead)) != -1) {
-				// above used read(content, totalBytesRead, content.length - totalBytesRead)
-				// method guarantees
-				// that service byte sent from partners writer and marking the end of partner
-				// public key transmission
-				// will be the last affected byte in read buffer
-
+			while ((bytesRead = in.read(content)) != -1) {
+				
 				totalBytesRead += bytesRead;
 
-				baos.write(content, totalBytesRead - bytesRead, bytesRead);
+				baos.write(content, 0, bytesRead);
 
 				if (Arrays.equals(// check last read bytes to be end byte sequence
-						Arrays.copyOfRange(content, totalBytesRead - endByteSequence.length, totalBytesRead),
+						Arrays.copyOfRange(baos.toByteArray(), totalBytesRead - endByteSequence.length, totalBytesRead),
 						endByteSequence)) {
 					break;
 				}
