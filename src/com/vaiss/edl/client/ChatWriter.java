@@ -27,7 +27,6 @@ public class ChatWriter implements Runnable {
 
 		if (properties.isEmpty()) {
 			System.out.println("Shutdown writer because of properties issue!");
-		//	ChatClient.setDisconnectDemanded(true);
 			return;
 		}
 
