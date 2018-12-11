@@ -50,7 +50,7 @@ public class ChatClient {
 			log.error("Something went wrong with the socket!");
 			System.out.println("Something went wrong with the socket!");
 		} catch (InterruptedException e) {
-			log.error("Something went really wrong!");
+			log.error("Multithreading issue");
 			System.out.println("Something went really wrong!");
 		}
 	}
