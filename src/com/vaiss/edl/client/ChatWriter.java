@@ -27,7 +27,7 @@ public class ChatWriter implements Runnable {
 
 		if (properties.isEmpty()) {
 			System.out.println("Shutdown writer because of properties issue!");
-			ChatClient.setDisconnectDemanded(true);
+		//	ChatClient.setDisconnectDemanded(true);
 			return;
 		}
 
@@ -82,7 +82,8 @@ public class ChatWriter implements Runnable {
 				out.write(encryptedMessage);
 			}
 		} catch (EncriptionException e) {
-			System.out.println("Encription process failed");
+			log.error("Encription process failed!");
+			System.out.println("Encription process failed!");
 		} catch (IOException e) {
 			log.error("Failed to write to socket!");
 			System.out.println("Failed to write to socket!");

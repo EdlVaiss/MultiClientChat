@@ -42,20 +42,15 @@ public class ChatReader implements Runnable {
 				System.out.println(message);
 			}
 
-			ChatClient.setDisconnectDemanded(true);
-
 		} catch (DecriptionException e) {
-			System.out.println("Decription process failed");
-			ChatClient.setDisconnectDemanded(true);
+			log.error("Decription process failed!");
+			System.out.println("Decription process failed!");
 		} catch (ClassNotFoundException e) {
 			log.error("Failed to manage partner's public key!");
 			System.out.println("Failed to manage partner's public key!");
-			ChatClient.setDisconnectDemanded(true);
-
 		} catch (IOException e) {
 			log.error("Failed to read from socket!");
 			System.out.println("Failed to read from socket!");
-			ChatClient.setDisconnectDemanded(true);
 		}
 	}
 }

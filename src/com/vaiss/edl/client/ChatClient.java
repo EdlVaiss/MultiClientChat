@@ -14,7 +14,6 @@ import com.vaiss.edl.propertiesholder.PropertiesHolder;
 
 public class ChatClient {
 	private static Logger log = Logger.getLogger(ChatClient.class);
-	private static volatile boolean disconnectDemanded;
 	private static Cryptor cryptor = RSACryptor.getInstance();
 	private static final byte[] keyTransmissionEndByteSequence = new byte[] { -1, -2, -3, -4 };
 	public static final String QUIT_WORD = "quit";
@@ -42,23 +41,18 @@ public class ChatClient {
 			 */
 			Thread writer = new Thread(new ChatWriter(socket));
 			writer.start();
-			while (!ChatClient.disconnectDemanded) {
-			}
+			writer.join();
+
 		} catch (UnknownHostException e) {
 			log.error("Can't identify remote host!");
 			System.out.println("Can't identify remote host!");
 		} catch (IOException e) {
 			log.error("Something went wrong with the socket!");
 			System.out.println("Something went wrong with the socket!");
+		} catch (InterruptedException e) {
+			log.error("Something went really wrong!");
+			System.out.println("Something went really wrong!");
 		}
-	}
-
-	public static boolean isDisconnectDemanded() {
-		return disconnectDemanded;
-	}
-
-	public static synchronized void setDisconnectDemanded(boolean disconnectDemanded) {
-		ChatClient.disconnectDemanded = disconnectDemanded;
 	}
 
 	public static Cryptor getCryptor() {
@@ -68,5 +62,4 @@ public class ChatClient {
 	public static byte[] getKeyTransmissionEndByteSequence() {
 		return keyTransmissionEndByteSequence;
 	}
-
 }
